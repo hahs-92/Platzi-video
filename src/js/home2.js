@@ -1,9 +1,11 @@
+/*
 const noCambia = 'Alex'
 let cambia = '@Alexander'
 
 function cambiarNombre(nuevoNombre){
     cambia = nuevoNombre
 }
+*/
 
 // ---promesa
 /*
@@ -19,6 +21,7 @@ const getUserAll = new Promise(function(todoBien, todoMal){
 
 
 // arrow function
+/*
 const getUserAll = new Promise((todoBien, todoMal) => {
     setTimeout(() => {
         todoBien('Todo va bien')
@@ -32,6 +35,8 @@ const getUser = new Promise(function(todoBien, todoMal){
         todoBien('TODO BIEN p2')
     }, 3000)
 })
+*/
+
 /*
 getUser
     .then(function(){
@@ -70,7 +75,7 @@ $.ajax('https://swapi.dev/api/people/1', {
   }
 })
 */
-
+/*
 fetch('https://swapi.dev/api/people/1')
     .then(function(response){
         console.log(response)
@@ -81,4 +86,37 @@ fetch('https://swapi.dev/api/people/1')
     })
     .catch(function(){
         console.log('algo fallo')
-    })
+    });
+    */
+
+
+
+
+// funciones asincronas
+
+console.log('prueba de asincronismo');
+
+
+(async function load(){
+    // generos
+    //action- terror -animation
+    async function getData(url){
+        const response = await fetch(url);
+        const data = await response.json()
+        return data;
+        // console.log(data)
+    }
+    
+    const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
+
+    const actionList = await getData(`${urlApi}action`)
+    const actionDrama = await getData(urlApi+'drama')
+    const actionAnimation = await getData(urlApi+'animation')
+
+    console.log('actionList', actionList)
+    console.log('actionDrama', actionDrama)
+    console.log('actionAnimation', actionAnimation);
+}
+)()
+
+console.log('prueba de asincronismo 2')
