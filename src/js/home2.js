@@ -117,6 +117,45 @@ console.log('prueba de asincronismo');
     console.log('actionDrama', actionDrama)
     console.log('actionAnimation', actionAnimation);
 
+     // CREACION TEMPLATES
+
+    //JQUERY
+
+    /*
+    '<div class= "primaryPlaylistItem">' +
+        '<div class ="primaryPlaylistItem-image">' +
+            '<img src="src/images/covers/midnight.jpg">' +
+        '</div>' +
+        <h4 class ="primaryPlaylistItem-title">
+            Titulo de la peli
+        </h4>
+    </div>'
+    */
+
+    //JS -TEMPLATES LITERALS
+
+    function videoItemTemplate(movie){
+        return (
+            `<div class='primaryPlaylistItem'>
+                <div class='primaryPlaylistItem-image'>
+                    <img src=''${movie.medium_cover_image}></img>
+                </div>
+                <h4 class='primaryPlaylistItem-title'>
+                    ${movie.title}
+                </h4>
+            </div>`
+        )
+    }
+
+    // console.log(videoItemTemplate('https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/poster-peliculas-terror-2019-muneco-diabolico-1578395577.jpg?crop=1xw:1xh;center,top&resize=480:*', 'Chucky'))
+    
+    actionList.data.movies.forEach((movie) => {
+        // console.log(movie)
+        const HTMLString = videoItemTemplate(movie)
+        console.log(HTMLString)
+        
+    });
+
     // SELECTORES
 
     // CON JQUERY
@@ -141,6 +180,10 @@ console.log('prueba de asincronismo');
     const $modalTitle = $modal.querySelector('h1')
     const $modalImage = $modal.querySelector('img')
     const $modalDescription = $modal.querySelector('p')
+
+
+   
+
     
 })()
 
