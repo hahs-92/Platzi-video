@@ -43,6 +43,7 @@ getUser
 */
 
 //para varias promesas
+/*
 Promise.all([
     getUserAll,
     getUser
@@ -53,3 +54,31 @@ Promise.all([
 .catch(function(message){
     console.log(message)
 })
+*/
+
+
+
+// -------ajax - js----------
+/*
+$.ajax('https://swapi.dev/api/people/1', {
+  method: 'GET',
+  success: function(data) {
+    console.log(data)
+  },
+  error: function(error) {
+    console.log(error)
+  }
+})
+*/
+
+fetch('https://swapi.dev/api/people/1')
+    .then(function(response){
+        console.log(response)
+        return response.json()
+    })
+    .then(function(data){
+        console.log(data.name)
+    })
+    .catch(function(){
+        console.log('algo fallo')
+    })
