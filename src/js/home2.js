@@ -112,6 +112,24 @@ fetch('https://swapi.dev/api/people/1')
     const $modalDescription = $modal.querySelector('p')
 
 
+
+    function featuringTemplate(peli){
+        return (
+        `
+            <div class="featuring">
+            <div class="featuring-image">
+              <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
+            </div>
+            <div class="featuring-content">
+              <p class="featuring-title">Pelicula encontrada</p>
+              <p class="featuring-album">${peli.title}</p>
+            </div>
+          </div>
+        `
+        )
+    }
+
+
     // generos
     //action- terror -animation
     async function getData(url){
@@ -130,7 +148,7 @@ fetch('https://swapi.dev/api/people/1')
     }
 
 
-    $form.addEventListener('submit', (event) => {
+    $form.addEventListener('submit', async(event) => {//el evento es una funcion asincrona
         event.preventDefault()//para evitar que la paginas se recargue cada vez que el usaurio busque una pelicual
         $home. classList.add('search-active') //cada vez que el usaurio busque una pelicual se agragra esta clase al home
         const $loader = document.createElement('img') //crear un elemento html desde cero
@@ -140,6 +158,13 @@ fetch('https://swapi.dev/api/people/1')
             width: 50
         })
         $featuringContainer.append($loader)
+
+        const data = new FormData($form)//obtenemos los valores del form, que declaramos previamente, gracias al name del formulario
+        const peli = await getData(`https://yts.mx/api/v2/list_movies.json?limit=1&query_term=${data.get('name')}`)//con limit=1 limito la bsuqueda a 1 resulatdo
+        //data.get('name')//retorna el valor del elemento en html con el name = 'name'
+        const HTMLString= featuringTemplate(peli.data.movies[0])
+        $featuringContainer.innerHTML = HTMLString 
+
     })
 
 
