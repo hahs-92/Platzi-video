@@ -112,7 +112,7 @@ fetch('https://swapi.dev/api/people/1')
     const $modalDescription = $modal.querySelector('p')
 
 
-
+    //template del modal donde se renderiza la pelicula que se busca
     function featuringTemplate(peli){
         return (
         `
@@ -160,9 +160,15 @@ fetch('https://swapi.dev/api/people/1')
         $featuringContainer.append($loader)
 
         const data = new FormData($form)//obtenemos los valores del form, que declaramos previamente, gracias al name del formulario
-        const peli = await getData(`https://yts.mx/api/v2/list_movies.json?limit=1&query_term=${data.get('name')}`)//con limit=1 limito la bsuqueda a 1 resulatdo
+        // const peli = await getData(`https://yts.mx/api/v2/list_movies.json?limit=1&query_term=${data.get('name')}`)//con limit=1 limito la bsuqueda a 1 resulatdo
+        //destructuracion de objetos //esto modifico lo de arriba
+        const {
+            data:{
+                movies: pelis
+            }
+        }= await getData(`https://yts.mx/api/v2/list_movies.json?limit=1&query_term=${data.get('name')}`)
         //data.get('name')//retorna el valor del elemento en html con el name = 'name'
-        const HTMLString= featuringTemplate(peli.data.movies[0])
+        const HTMLString= featuringTemplate(pelis[0])
         $featuringContainer.innerHTML = HTMLString 
 
     })
