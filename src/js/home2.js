@@ -155,9 +155,9 @@ console.log('prueba de asincronismo');
         // console.log(movie)
         const HTMLString = videoItemTemplate(movie)
         const html = document.implementation.createHTMLDocument() //crea un documento html
-        html.body.innerHTML = HTMLString
-        $actionContainer.append(html.body.children[0]) //se imprime en el html
-        console.log(HTMLString)
+        html.body.innerHTML = HTMLString //inner inserta al body la plantilla htmlString
+        $actionContainer.append(html.body.children[0]) //le pedimos al body su primer hijo que fue el que le acabamos de insertar y lo añadimos al container
+        // console.log(HTMLString)
         
     });
 
