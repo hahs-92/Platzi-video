@@ -94,7 +94,7 @@ fetch('https://swapi.dev/api/people/1')
 
 // funciones asincronas
 
-console.log('prueba de asincronismo');
+// console.log('prueba de asincronismo');
 
 
 (async function load(){
@@ -106,16 +106,25 @@ console.log('prueba de asincronismo');
         return data;
         // console.log(data)
     }
+
+
+    const $form= document.getElementById('form')
+
+    $form.addEventListener('submit', (event) => {
+        event.preventDefault()//para evitar que la paginas se recargue cada vez que el usaurio busque una pelicual
+        alert('buscando')
+    })
+
     
     const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
 
     const actionList = await getData(`${urlApi}action`)
-    const actionDrama = await getData(urlApi+'drama')
-    const actionAnimation = await getData(urlApi+'animation')
+    const dramaList = await getData(urlApi+'drama')
+    const animationList = await getData(urlApi+'animation')
 
     console.log('actionList', actionList)
-    console.log('actionDrama', actionDrama)
-    console.log('actionAnimation', actionAnimation);
+    console.log('actionDrama', dramaList)
+    console.log('actionAnimation', animationList);
 
      // CREACION TEMPLATES
 
@@ -149,17 +158,45 @@ console.log('prueba de asincronismo');
 
     // console.log(videoItemTemplate('https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/poster-peliculas-terror-2019-muneco-diabolico-1578395577.jpg?crop=1xw:1xh;center,top&resize=480:*', 'Chucky'))
     
-    //const $actionContainer = document.querySelector('#action') // la declaro antes de ser utilizada
-    const $actionContainer = document.getElementById('action')
-    actionList.data.movies.forEach((movie) => {
-        // console.log(movie)
-        const HTMLString = videoItemTemplate(movie)
+    function createTemplate(HTMLString){
         const html = document.implementation.createHTMLDocument() //crea un documento html
         html.body.innerHTML = HTMLString //inner inserta al body la plantilla htmlString
-        $actionContainer.append(html.body.children[0]) //le pedimos al body su primer hijo que fue el que le acabamos de insertar y lo añadimos al container
-        // console.log(HTMLString)
+        return html.body.children[0]; //devuelve el primer hijo de body
+    }
+
+    //hacer un evento cuando el usuario de click sonbre el dom creado es decir la imagen de la pelicuals
+    function addEventClick($element){
+        $element.addEventListener('click',() => alert('click'))
+    }
+
+    //funcion para renderizar los html
+    function renderMovieList( list, $conatiner){
         
-    });
+        $conatiner.children[0].remove() //elimina el la img git de carga 
+
+        //actionList.data.movies // esto se cambio por el parmetro list
+        list.forEach((movie) => {
+            // console.log(movie)
+            const HTMLString = videoItemTemplate(movie)
+            const movieElement = createTemplate(HTMLString)
+            // const html = document.implementation.createHTMLDocument() //crea un documento html    estas dos lineas se llevaron a una funcion createTemplate
+            // html.body.innerHTML = HTMLString //inner inserta al body la plantilla htmlString
+            //$actionContainer  //se cambio por el parametro container 
+            $conatiner.append(movieElement)
+            addEventClick(movieElement)//le pasamos  a esta funcion el elemento html que qeremos agragarle un evento
+            // console.log(HTMLString)
+        })
+    }
+    
+    //const $actionContainer = document.querySelector('#action') // la declaro antes de ser utilizada
+    const $actionContainer = document.getElementById('action')
+    const $dramaContainer = document.getElementById('drama')
+    const $animationContainer = document.getElementById('animation')
+
+
+    renderMovieList(actionList.data.movies, $actionContainer)
+    renderMovieList(dramaList.data.movies, $dramaContainer)
+    renderMovieList(animationList.data.movies, $animationContainer)
 
     // SELECTORES
 
@@ -171,11 +208,8 @@ console.log('prueba de asincronismo');
 
     // const $home = document.getElementById('modal')
     
-    const $dramaContainer = document.getElementById('drama')
-    const $animationContainer = document.getElementById('animation')
 
     const $featuringContainer = document.getElementById('featuring')
-    const $form= document.getElementById('form')
     const $home = document.getElementById('home')
 
     const $modal = document.getElementById('modal')
@@ -192,7 +226,7 @@ console.log('prueba de asincronismo');
     
 })()
 
-console.log('prueba de asincronismo 2')
+// console.log('prueba de asincronismo 2')
 
 
 
