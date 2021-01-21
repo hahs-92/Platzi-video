@@ -138,7 +138,7 @@ console.log('prueba de asincronismo');
         return (
             `<div class='primaryPlaylistItem'>
                 <div class='primaryPlaylistItem-image'>
-                    <img src=''${movie.medium_cover_image}></img>
+                    <img src=${movie.medium_cover_image}></img>
                 </div>
                 <h4 class='primaryPlaylistItem-title'>
                     ${movie.title}
@@ -149,9 +149,14 @@ console.log('prueba de asincronismo');
 
     // console.log(videoItemTemplate('https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/poster-peliculas-terror-2019-muneco-diabolico-1578395577.jpg?crop=1xw:1xh;center,top&resize=480:*', 'Chucky'))
     
+    //const $actionContainer = document.querySelector('#action') // la declaro antes de ser utilizada
+    const $actionContainer = document.getElementById('action')
     actionList.data.movies.forEach((movie) => {
         // console.log(movie)
         const HTMLString = videoItemTemplate(movie)
+        const html = document.implementation.createHTMLDocument() //crea un documento html
+        html.body.innerHTML = HTMLString
+        $actionContainer.append(html.body.children[0]) //se imprime en el html
         console.log(HTMLString)
         
     });
@@ -165,7 +170,7 @@ console.log('prueba de asincronismo');
     //js
 
     // const $home = document.getElementById('modal')
-    const $actionContainer = document.getElementById('action')
+    
     const $dramaContainer = document.getElementById('drama')
     const $animationContainer = document.getElementById('animation')
 
