@@ -211,9 +211,9 @@ fetch('https://swapi.dev/api/people/1')
 
     //JS -TEMPLATES LITERALS
 
-    function videoItemTemplate(movie){
+    function videoItemTemplate(movie, category){
         return (
-            `<div class='primaryPlaylistItem'>
+            `<div class='primaryPlaylistItem' data-id='${movie.id}' data-category=${category}>
                 <div class='primaryPlaylistItem-image'>
                     <img src=${movie.medium_cover_image}></img>
                 </div>
@@ -234,18 +234,18 @@ fetch('https://swapi.dev/api/people/1')
 
     //hacer un evento cuando el usuario de click sonbre el dom creado es decir la imagen de la pelicuals
     function addEventClick($element){
-        $element.addEventListener('click',() =>  showModal()) //cuando el usuario de buscar se llama la funcion showModal
+        $element.addEventListener('click',() =>  showModal($element)) //cuando el usuario de buscar se llama la funcion showModal
     }
 
     //funcion para renderizar los html
-    function renderMovieList( list, $conatiner){
+    function renderMovieList( list, $conatiner, category){
         
         $conatiner.children[0].remove() //elimina el la img git de carga 
 
         //actionList.data.movies // esto se cambio por el parmetro list
         list.forEach((movie) => {
             // console.log(movie)
-            const HTMLString = videoItemTemplate(movie)
+            const HTMLString = videoItemTemplate(movie, category)
             const movieElement = createTemplate(HTMLString)
             // const html = document.implementation.createHTMLDocument() //crea un documento html    estas dos lineas se llevaron a una funcion createTemplate
             // html.body.innerHTML = HTMLString //inner inserta al body la plantilla htmlString
@@ -257,9 +257,12 @@ fetch('https://swapi.dev/api/people/1')
     }
     
 
-    function showModal(){
+    function showModal($element){
         $overlay.classList.add('active')//le agregamos una clase que activa este elemnto
         $modal.style.animation = 'modalIn .8s  forwards' //le agregamos una animacion
+        //const id = $element.dataset.id
+        //const category = $element.dataset.category
+        const { id, category } = $element.dataset //desestruturing //igual a las 2 lineas de arriba
     }
 
 
@@ -276,9 +279,9 @@ fetch('https://swapi.dev/api/people/1')
     const $animationContainer = document.getElementById('animation')
 
 
-    renderMovieList(actionList.data.movies, $actionContainer)
-    renderMovieList(dramaList.data.movies, $dramaContainer)
-    renderMovieList(animationList.data.movies, $animationContainer)
+    renderMovieList(actionList.data.movies, $actionContainer,'action')
+    renderMovieList(dramaList.data.movies, $dramaContainer, 'drama')
+    renderMovieList(animationList.data.movies, $animationContainer, 'animation')
 
     // SELECTORES
 
