@@ -98,6 +98,20 @@ fetch('https://swapi.dev/api/people/1')
 
 
 (async function load(){
+
+    const $featuringContainer = document.getElementById('featuring')
+    const $home = document.getElementById('home')
+    const $form= document.getElementById('form')
+
+    const $modal = document.getElementById('modal')
+    const $overlay = document.getElementById('overlay')
+    const $hideModal = document.getElementById('hide-modal')
+
+    const $modalTitle = $modal.querySelector('h1')
+    const $modalImage = $modal.querySelector('img')
+    const $modalDescription = $modal.querySelector('p')
+
+
     // generos
     //action- terror -animation
     async function getData(url){
@@ -108,11 +122,10 @@ fetch('https://swapi.dev/api/people/1')
     }
 
 
-    const $form= document.getElementById('form')
 
     $form.addEventListener('submit', (event) => {
         event.preventDefault()//para evitar que la paginas se recargue cada vez que el usaurio busque una pelicual
-        alert('buscando')
+        $home. classList.add('search-active') //cada vez que el usaurio busque una pelicual se agragra esta clase al home
     })
 
     
@@ -122,9 +135,11 @@ fetch('https://swapi.dev/api/people/1')
     const dramaList = await getData(urlApi+'drama')
     const animationList = await getData(urlApi+'animation')
 
+    /*
     console.log('actionList', actionList)
     console.log('actionDrama', dramaList)
     console.log('actionAnimation', animationList);
+    */
 
      // CREACION TEMPLATES
 
@@ -166,7 +181,7 @@ fetch('https://swapi.dev/api/people/1')
 
     //hacer un evento cuando el usuario de click sonbre el dom creado es decir la imagen de la pelicuals
     function addEventClick($element){
-        $element.addEventListener('click',() => alert('click'))
+        $element.addEventListener('click',() =>  showModal()) //cuando el usuario de buscar se llama la funcion showModal
     }
 
     //funcion para renderizar los html
@@ -188,6 +203,20 @@ fetch('https://swapi.dev/api/people/1')
         })
     }
     
+
+    function showModal(){
+        $overlay.classList.add('active')//le agregamos una clase que activa este elemnto
+        $modal.style.animation = 'modalIn .8s  forwards' //le agregamos una animacion
+    }
+
+
+    //cuando el usuario de click en cerrar el modal
+    $hideModal.addEventListener('click', hideModal)
+    function hideModal(){
+        $overlay.classList.remove('active')//le quitamos una clase que activa este elemnto
+        $modal.style.animation = 'modalOut .8s  forwards' //le agregamos una animacion
+    }
+
     //const $actionContainer = document.querySelector('#action') // la declaro antes de ser utilizada
     const $actionContainer = document.getElementById('action')
     const $dramaContainer = document.getElementById('drama')
@@ -209,19 +238,6 @@ fetch('https://swapi.dev/api/people/1')
     // const $home = document.getElementById('modal')
     
 
-    const $featuringContainer = document.getElementById('featuring')
-    const $home = document.getElementById('home')
-
-    const $modal = document.getElementById('modal')
-    const $overlay = document.getElementById('overlay')
-    const $hideModal = document.getElementById('hide-modal')
-
-    const $modalTitle = $modal.querySelector('h1')
-    const $modalImage = $modal.querySelector('img')
-    const $modalDescription = $modal.querySelector('p')
-
-
-   
 
     
 })()
