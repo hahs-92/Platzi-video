@@ -114,18 +114,25 @@ fetch('https://swapi.dev/api/people/1')
 
     //template del modal donde se renderiza la pelicula que se busca
     function featuringTemplate(peli){
+
+        //desestrucutuacion el objeto que esta dentro de un array(movies)
+        const {
+            title,
+            medium_cover_image
+        } = peli;
         return (
         `
             <div class="featuring">
             <div class="featuring-image">
-              <img src="${peli.medium_cover_image}" width="70" height="100" alt="">
+              <img src="${medium_cover_image}" width="70" height="100" alt="">
             </div>
             <div class="featuring-content">
               <p class="featuring-title">Pelicula encontrada</p>
-              <p class="featuring-album">${peli.title}</p>
+              <p class="featuring-album">${title}</p>
             </div>
           </div>
         `
+        //con la desestrucutracion ya no debo colocar peli.title sino solo title
         )
     }
 
