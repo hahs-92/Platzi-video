@@ -122,11 +122,26 @@ fetch('https://swapi.dev/api/people/1')
     }
 
 
+    //funcion para crear multiples atributos a un elemneto
+    function setAttributes($element, attributes){
+        for(const attribute in attributes){
+            $element.setAttribute(attribute, attributes[attribute])
+        }
+    }
+
 
     $form.addEventListener('submit', (event) => {
         event.preventDefault()//para evitar que la paginas se recargue cada vez que el usaurio busque una pelicual
         $home. classList.add('search-active') //cada vez que el usaurio busque una pelicual se agragra esta clase al home
+        const $loader = document.createElement('img') //crear un elemento html desde cero
+        setAttributes($loader, { 
+            src: 'src/images/loader.gif',
+            height: 50,
+            width: 50
+        })
+        $featuringContainer.append($loader)
     })
+
 
     
     const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
