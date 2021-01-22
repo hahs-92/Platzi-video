@@ -143,8 +143,13 @@ fetch('https://swapi.dev/api/people/1')
     async function getData(url){
         const response = await fetch(url);
         const data = await response.json()
-        return data;
-        // console.log(data)
+
+        if(data.data.movie_count > 0){ // si hay mas de cero coincidencias en la busqueda de la pelicual
+            return data;
+            // console.log(data)
+        }
+        //si no hay peliculas
+        throw new Error('No se encontro ningun resultado')
     }
 
 
@@ -168,16 +173,23 @@ fetch('https://swapi.dev/api/people/1')
         $featuringContainer.append($loader)
 
         const data = new FormData($form)//obtenemos los valores del form, que declaramos previamente, gracias al name del formulario
-        // const peli = await getData(`https://yts.mx/api/v2/list_movies.json?limit=1&query_term=${data.get('name')}`)//con limit=1 limito la bsuqueda a 1 resulatdo
-        //destructuracion de objetos //esto modifico lo de arriba
-        const {
-            data:{
-                movies: pelis
-            }
-        }= await getData(`https://yts.mx/api/v2/list_movies.json?limit=1&query_term=${data.get('name')}`)
-        //data.get('name')//retorna el valor del elemento en html con el name = 'name'
-        const HTMLString= featuringTemplate(pelis[0])
-        $featuringContainer.innerHTML = HTMLString 
+        try {
+            // const peli = await getData(`https://yts.mx/api/v2/list_movies.json?limit=1&query_term=${data.get('name')}`)//con limit=1 limito la bsuqueda a 1 resulatdo
+            //destructuracion de objetos //esto modifico lo de arriba
+            const {
+                data:{
+                    movies: pelis
+                }
+            }= await getData(`https://yts.mx/api/v2/list_movies.json?limit=1&query_term=${data.get('name')}`)
+            //data.get('name')//retorna el valor del elemento en html con el name = 'name'
+            const HTMLString= featuringTemplate(pelis[0])
+            $featuringContainer.innerHTML = HTMLString 
+            
+        } catch (error) { //si el usuario busca una pelicula que no existe
+            alert(error.message)
+            $loader.remove()//elimina el html creado desde cero
+            $home.classList.remove('search-active')
+        }
 
     })
 
@@ -238,6 +250,7 @@ fetch('https://swapi.dev/api/people/1')
         $conatiner.children[0].remove() //elimina el la img git de carga 
 
         //actionList.data.movies // esto se cambio por el parmetro list
+        
         list.forEach((movie) => {
             // console.log(movie)
             const HTMLString = videoItemTemplate(movie, category)
