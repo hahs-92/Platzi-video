@@ -106,11 +106,12 @@ fetch('https://swapi.dev/api/people/1')
     const $modal = document.getElementById('modal')
     const $overlay = document.getElementById('overlay')
     const $hideModal = document.getElementById('hide-modal')
-
+    
+    
     const $modalTitle = $modal.querySelector('h1')
     const $modalImage = $modal.querySelector('img')
     const $modalDescription = $modal.querySelector('p')
-
+    
 
     //template del modal donde se renderiza la pelicula que se busca
     function featuringTemplate(peli){
@@ -184,9 +185,12 @@ fetch('https://swapi.dev/api/people/1')
     
     const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
 
-    const actionList = await getData(`${urlApi}action`)
-    const dramaList = await getData(urlApi+'drama')
-    const animationList = await getData(urlApi+'animation')
+    // const actionList = await getData(`${urlApi}action`)
+    const { data: { movies: actionList } } = await getData(`${urlApi}action`)//destructurado
+    // const dramaList = await getData(urlApi+'drama')
+    const { data: { movies: dramaList } } = await getData(urlApi+'drama')//desestrucutrado
+    // const animationList = await getData(urlApi+'animation')
+    const { data: { movies: animationList } } = await getData(urlApi+'drama')//desestructutado
 
     /*
     console.log('actionList', actionList)
@@ -255,7 +259,33 @@ fetch('https://swapi.dev/api/people/1')
             // console.log(HTMLString)
         })
     }
+
+    function findId(list, id){
+        return list.find((movie) =>  movie.id === parseInt(id,10))
+    }
     
+
+    function findMovie(id, category){
+        switch(category){
+            case 'action':{
+                // actionList.find((movie) =>  movie.id === parseInt(id,10))
+                return findId(actionList, id)
+                break
+            }
+            case 'drama':{
+                // actionList.find((movie) =>  movie.id === parseInt(id,10))
+                return findId(dramaList, id)
+                break
+            }
+            default: {
+                return findId(animationList, id)
+                break
+            }
+        }
+
+        
+    }
+
 
     function showModal($element){
         $overlay.classList.add('active')//le agregamos una clase que activa este elemnto
@@ -263,6 +293,13 @@ fetch('https://swapi.dev/api/people/1')
         //const id = $element.dataset.id
         //const category = $element.dataset.category
         const { id, category } = $element.dataset //desestruturing //igual a las 2 lineas de arriba
+
+        const data = findMovie(id, category)
+
+        $modalTitle.textContent = data.title
+        $modalImage.setAttribute('src', data.medium_cover_image)
+        $modalDescription.textContent = data.description_full
+        
     }
 
 
@@ -278,10 +315,16 @@ fetch('https://swapi.dev/api/people/1')
     const $dramaContainer = document.getElementById('drama')
     const $animationContainer = document.getElementById('animation')
 
-
+    /*
     renderMovieList(actionList.data.movies, $actionContainer,'action')
     renderMovieList(dramaList.data.movies, $dramaContainer, 'drama')
     renderMovieList(animationList.data.movies, $animationContainer, 'animation')
+    */  
+
+    renderMovieList(actionList, $actionContainer,'action')
+    renderMovieList(dramaList, $dramaContainer, 'drama')
+    renderMovieList(animationList, $animationContainer, 'animation')
+
 
     // SELECTORES
 
