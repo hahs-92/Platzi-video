@@ -182,15 +182,6 @@ fetch('https://swapi.dev/api/people/1')
     })
 
 
-    
-    const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
-
-    // const actionList = await getData(`${urlApi}action`)
-    const { data: { movies: actionList } } = await getData(`${urlApi}action`)//destructurado
-    // const dramaList = await getData(urlApi+'drama')
-    const { data: { movies: dramaList } } = await getData(urlApi+'drama')//desestrucutrado
-    // const animationList = await getData(urlApi+'animation')
-    const { data: { movies: animationList } } = await getData(urlApi+'drama')//desestructutado
 
     /*
     console.log('actionList', actionList)
@@ -255,6 +246,12 @@ fetch('https://swapi.dev/api/people/1')
             // html.body.innerHTML = HTMLString //inner inserta al body la plantilla htmlString
             //$actionContainer  //se cambio por el parametro container 
             $conatiner.append(movieElement)
+            const image = movieElement.querySelector('img')//guardamos en una variable los elementos con id img, es decir la imagen
+            image.addEventListener('load', (event) => {
+
+               // movieElement.classList.add('fadeIn')//se le agrega la clase fadeIn para aplicarle animaciones 
+               event.target.classList.add('fadeIn')//fade solo se le aplicara a la iamgen
+            })
             addEventClick(movieElement)//le pasamos  a esta funcion el elemento html que qeremos agragarle un evento
             // console.log(HTMLString)
         })
@@ -282,7 +279,6 @@ fetch('https://swapi.dev/api/people/1')
                 break
             }
         }
-
         
     }
 
@@ -310,6 +306,12 @@ fetch('https://swapi.dev/api/people/1')
         $modal.style.animation = 'modalOut .8s  forwards' //le agregamos una animacion
     }
 
+     
+    const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
+
+
+
+
     //const $actionContainer = document.querySelector('#action') // la declaro antes de ser utilizada
     const $actionContainer = document.getElementById('action')
     const $dramaContainer = document.getElementById('drama')
@@ -321,8 +323,18 @@ fetch('https://swapi.dev/api/people/1')
     renderMovieList(animationList.data.movies, $animationContainer, 'animation')
     */  
 
+    // const actionList = await getData(`${urlApi}action`)
+    const { data: { movies: actionList } } = await getData(`${urlApi}action`)//destructurado
+    
     renderMovieList(actionList, $actionContainer,'action')
+
+     // const dramaList = await getData(urlApi+'drama')
+     const { data: { movies: dramaList } } = await getData(urlApi+'drama')//desestrucutrado
+
     renderMovieList(dramaList, $dramaContainer, 'drama')
+
+    // const animationList = await getData(urlApi+'animation')
+    const { data: { movies: animationList } } = await getData(urlApi+'animation')//desestructutado
     renderMovieList(animationList, $animationContainer, 'animation')
 
 
