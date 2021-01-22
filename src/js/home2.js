@@ -111,6 +111,7 @@ fetch('https://swapi.dev/api/people/1')
     const $modalTitle = $modal.querySelector('h1')
     const $modalImage = $modal.querySelector('img')
     const $modalDescription = $modal.querySelector('p')
+
     
 
     //template del modal donde se renderiza la pelicula que se busca
@@ -138,6 +139,29 @@ fetch('https://swapi.dev/api/people/1')
     }
 
 
+    //template de playList de amigos
+    /*
+    function playListFriends(item){
+
+        const friend = item.data.gender
+
+        return (
+            `
+            <li class="playlistFriends-item">
+            <a href="#">
+              <img src="" alt="echame la culpa" />
+              <span>
+                Leonida
+              </span>
+            </a>
+          </li>
+
+            `
+        )
+    }
+    */
+
+
     // generos
     //action- terror -animation
     async function getData(url){
@@ -153,12 +177,14 @@ fetch('https://swapi.dev/api/people/1')
     }
 
 
+
     //funcion para crear multiples atributos a un elemneto
     function setAttributes($element, attributes){
         for(const attribute in attributes){
             $element.setAttribute(attribute, attributes[attribute])
         }
     }
+
 
 
     $form.addEventListener('submit', async(event) => {//el evento es una funcion asincrona
@@ -320,10 +346,9 @@ fetch('https://swapi.dev/api/people/1')
     }
 
      
+
+
     const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
-
-
-
 
     //const $actionContainer = document.querySelector('#action') // la declaro antes de ser utilizada
     const $actionContainer = document.getElementById('action')
@@ -338,16 +363,20 @@ fetch('https://swapi.dev/api/people/1')
 
     // const actionList = await getData(`${urlApi}action`)
     const { data: { movies: actionList } } = await getData(`${urlApi}action`)//destructurado
+    window.localStorage.setItem('actionList', JSON.stringify(actionList))
     
     renderMovieList(actionList, $actionContainer,'action')
 
      // const dramaList = await getData(urlApi+'drama')
      const { data: { movies: dramaList } } = await getData(urlApi+'drama')//desestrucutrado
+     window.localStorage.setItem('dramaList',JSON.stringify(dramaList))
 
     renderMovieList(dramaList, $dramaContainer, 'drama')
 
     // const animationList = await getData(urlApi+'animation')
     const { data: { movies: animationList } } = await getData(urlApi+'animation')//desestructutado
+    window.localStorage.setItem('animationList', JSON.stringify(animationList))
+
     renderMovieList(animationList, $animationContainer, 'animation')
 
 
@@ -360,9 +389,6 @@ fetch('https://swapi.dev/api/people/1')
     //js
 
     // const $home = document.getElementById('modal')
-    
-
-
     
 })()
 
