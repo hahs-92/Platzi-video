@@ -306,16 +306,16 @@ fetch('https://swapi.dev/api/people/1')
             case 'action':{
                 // actionList.find((movie) =>  movie.id === parseInt(id,10))
                 return findId(actionList, id)
-                break
+                
             }
             case 'drama':{
                 // actionList.find((movie) =>  movie.id === parseInt(id,10))
                 return findId(dramaList, id)
-                break
+               
             }
             default: {
                 return findId(animationList, id)
-                break
+              
             }
         }
         
@@ -345,10 +345,27 @@ fetch('https://swapi.dev/api/people/1')
         $modal.style.animation = 'modalOut .8s  forwards' //le agregamos una animacion
     }
 
+
+
+    async function cacheExits(category){
+        const listName = `${category}List`
+        // const cacheList = window.localStorage.getItem(listName)
+        const cacheList = window.sessionStorage.getItem(listName)
+        if(cacheList){ //si hay datos guardados en la memoria
+            return JSON.parse(cacheList)//se convierete de texto a un ojbeto
+        }
+
+        // const data =  await getData(`${urlApi}${category}`)
+        const { data: { movies: data } } =  await getData(`${urlApi} ${category}`)
+        // window.localStorage.setItem(listName, JSON.stringify(data))
+        window.sessionStorage.setItem(listName, JSON.stringify(data))
+
+        return data
+    }
+
      
 
-
-    const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
+     const urlApi = 'https://yts.mx/api/v2/list_movies.json?genre='
 
     //const $actionContainer = document.querySelector('#action') // la declaro antes de ser utilizada
     const $actionContainer = document.getElementById('action')
@@ -362,21 +379,21 @@ fetch('https://swapi.dev/api/people/1')
     */  
 
     // const actionList = await getData(`${urlApi}action`)
-    const { data: { movies: actionList } } = await getData(`${urlApi}action`)//destructurado
-    window.localStorage.setItem('actionList', JSON.stringify(actionList))
-    
+    //const { data: { movies: actionList } } = await getData(`${urlApi}action`)//destructurado
+    const actionList = await cacheExits('action')
+    // window.localStorage.setItem('actionList', JSON.stringify(actionList)) // esto ahorra se hace con la funcion cacheExits
     renderMovieList(actionList, $actionContainer,'action')
 
-     // const dramaList = await getData(urlApi+'drama')
-     const { data: { movies: dramaList } } = await getData(urlApi+'drama')//desestrucutrado
-     window.localStorage.setItem('dramaList',JSON.stringify(dramaList))
-
+    // const dramaList = await getData(urlApi+'drama')
+    // const { data: { movies: dramaList } } = await getData(urlApi+'drama')//desestrucutrado
+    const dramaList = await cacheExits('drama')
+    // window.localStorage.setItem('dramaList',JSON.stringify(dramaList))
     renderMovieList(dramaList, $dramaContainer, 'drama')
 
     // const animationList = await getData(urlApi+'animation')
-    const { data: { movies: animationList } } = await getData(urlApi+'animation')//desestructutado
-    window.localStorage.setItem('animationList', JSON.stringify(animationList))
-
+    // const { data: { movies: animationList } } = await getData(urlApi+'animation')//desestructutado
+    const animationList = await cacheExits('animation')
+    // window.localStorage.setItem('animationList', JSON.stringify(animationList))
     renderMovieList(animationList, $animationContainer, 'animation')
 
 
