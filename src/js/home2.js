@@ -112,6 +112,8 @@ fetch('https://swapi.dev/api/people/1')
     const $modalImage = $modal.querySelector('img')
     const $modalDescription = $modal.querySelector('p')
 
+    const $friendsContainer = document.getElementById('friends')
+
     
 
     //template del modal donde se renderiza la pelicula que se busca
@@ -140,18 +142,15 @@ fetch('https://swapi.dev/api/people/1')
 
 
     //template de playList de amigos
-    /*
-    function playListFriends(item){
-
-        const friend = item.data.gender
+    function playListFriendsTemplate(name, img){
 
         return (
             `
             <li class="playlistFriends-item">
             <a href="#">
-              <img src="" alt="echame la culpa" />
+              <img src="${img}" alt="echame la culpa" />
               <span>
-                Leonida
+                ${name}
               </span>
             </a>
           </li>
@@ -159,7 +158,37 @@ fetch('https://swapi.dev/api/people/1')
             `
         )
     }
-    */
+
+
+
+    async function getDataFriends($container){
+        const response = await fetch('https://randomuser.me/api/')
+        const data = await response.json()
+        const name = await data.results[0].name.first 
+        const lastname = await data.results[0].name.last 
+        const img = await data.results[0].picture.medium
+        /*
+        console.log(data)
+        console.log(data.results)
+        console.log(name)
+        console.log(lastname)
+        console.log(img)
+        */
+        const template = playListFriendsTemplate(name, img)
+        const dom = createTemplate(template)
+        $container.append(dom)
+    }
+
+
+    function listarFriends(numero){
+        for(let i = 0 ; i < numero; i ++){
+            getDataFriends($friendsContainer)
+        }
+
+    }
+
+    listarFriends(10)
+   
 
 
     // generos
